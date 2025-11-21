@@ -1,5 +1,5 @@
 {
-  "name": "arduino-api-bridge",
+  "name": "sheety-proxy",
   "version": "1.0.0",
   "type": "module",
   "dependencies": {
