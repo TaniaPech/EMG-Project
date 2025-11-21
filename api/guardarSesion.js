@@ -1,16 +1,17 @@
 import fetch from "node-fetch";
 
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby7AfORw6xkk54QBA5BBU_jeeO3rYoemSWstmVEG_OBQBFuLSZxHd78zTENxV/exec";
-
 export default async function handler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*"); // para CORS
-  const { id, nombre, rms, vmax } = req.query;
   try {
-    const url = `${GOOGLE_SCRIPT_URL}?action=guardarSesion&id=${id}&nombre=${nombre}&rms=${rms}&vmax=${vmax}`;
-    const response = await fetch(url);
-    const text = await response.text();
-    res.status(200).send(text);
+    // Sheety espera JSON con la estructura { "dato": {...} }
+    const response = await fetch("https://api.sheety.co/2dbbde5b4196738220e76aed7ea0ffb2/bioinstru/datos", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ dato: req.body })
+    });
+
+    const data = await response.json();
+    res.status(200).json(data);
   } catch (err) {
-    res.status(500).send("Error guardando sesión");
+    res.status(500).json({ error: err.message });
   }
 }
