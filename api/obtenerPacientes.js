@@ -1,14 +1,11 @@
 import fetch from "node-fetch";
 
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby7AfORw6xkk54QBA5BBU_jeeO3rYoemSWstmVEG_OBQBFuLSZxHd78zTENxV/exec";
-
 export default async function handler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*"); // para CORS
   try {
-    const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=obtenerPacientes`);
+    const response = await fetch("https://api.sheety.co/2dbbde5b4196738220e76aed7ea0ffb2/bioinstru/pacientes");
     const data = await response.json();
     res.status(200).json(data);
   } catch (err) {
-    res.status(500).json({ error: "Error obteniendo pacientes" });
+    res.status(500).json({ error: err.message });
   }
 }
